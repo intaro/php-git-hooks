@@ -5,6 +5,8 @@ File pre-commit for the local repository of the Symfony project. Checks the comm
 * PHP Syntax on PHP-errors (with PHPLint)
 * Check code style for compliance with the standard PSR2
 
+Based on `pre-commit` hook of [Carlos Buenosvinos](http://carlosbuenosvinos.com/write-your-git-hooks-in-php-and-keep-them-under-git-control/).
+
 ## Installation
 
 Clone repository:
