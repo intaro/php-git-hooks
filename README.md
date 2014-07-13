@@ -14,6 +14,9 @@ Clone repository:
 ```bash
 cd some/path
 git clone https://github.com/intaro/sf-pre-commit
+cd sf-pre-commit
+php -r "readfile('https://getcomposer.org/installer');" | php
+./composer.phar install
 ```
 
 Make symlink to the `pre-commit` file:
@@ -21,17 +24,6 @@ Make symlink to the `pre-commit` file:
 ```bash
 cd some/symfony/project/.git/hooks
 ln -s some/path/sf-pre-commit/pre-commit pre-commit
-```
-
-Add [PHP-CS-Fixer](https://github.com/fabpot/PHP-CS-Fixer) and [PHP CodeSniffer](https://github.com/squizlabs/php_codesniffer) to `composer.json` of your project:
-
-```json
-{
-    "require": {
-        "squizlabs/php_codesniffer": "1.*",
-        "fabpot/php-cs-fixer": "0.5.4"
-    }
-}
 ```
 
 ## Example of output
@@ -44,8 +36,8 @@ Running PHPLint
 Checking code style
 1) src/Acme/DemoBundle/Tests/Controller/DefaultControllerTest.php (unused_use, eof_ending)
 
-  [Exception]                             
-  There are coding standards violations!  
+  [Exception]
+  There are coding standards violations!
 ```
 
 ```bash
@@ -63,8 +55,8 @@ FOUND 0 ERROR(S) AND 2 WARNING(S) AFFECTING 2 LINE(S)
  212 | WARNING | Line exceeds 120 characters; contains 128 characters
 --------------------------------------------------------------------------------
 
-  [Exception]                                   
-  There are PHPCS coding standards violations!  
+  [Exception]
+  There are PHPCS coding standards violations!
 ```
 
 ```bash

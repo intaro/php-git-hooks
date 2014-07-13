@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,6 +30,9 @@ class CodeQualityTool extends Application
         $output->writeln('<info>Fetching files</info>');
         $files = $this->extractCommitedFiles();
 
+        $output->writeln('<info>Check composer</info>');
+        $this->checkComposer($files);
+
         $output->writeln('<info>Running PHPLint</info>');
         if (!$this->phpLint($files)) {
             throw new Exception('There are some PHP syntax errors!');
@@ -46,6 +49,26 @@ class CodeQualityTool extends Application
         }
 
         $output->writeln('<info>Good job dude!</info>');
+    }
+
+    private function checkComposer($files)
+    {
+        $composerJsonDetected = false;
+        $composerLockDetected = false;
+
+        foreach ($files as $file) {
+            if ($file === 'composer.json') {
+                $composerJsonDetected = true;
+            }
+
+            if ($file === 'composer.lock') {
+                $composerLockDetected = true;
+            }
+        }
+
+        if ($composerJsonDetected && !$composerLockDetected) {
+            throw new Exception('composer.lock must be commited if composer.json is modified!');
+        }
     }
 
     private function extractCommitedFiles()
@@ -108,9 +131,9 @@ class CodeQualityTool extends Application
             if ($classesFile) {
                 $fixers = 'eof_ending,indentation,linefeed,lowercase_keywords,trailing_spaces,short_tag,php_closing_tag,extra_empty_lines,elseif,function_declaration';
             }
-            $processBuilder = new ProcessBuilder(array('php', 'bin/php-cs-fixer', '--dry-run', '--verbose', 'fix', $file, '--fixers='.$fixers));
+            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/php-cs-fixer', '--dry-run', '--verbose', 'fix', $file, '--fixers='.$fixers));
 
-            $processBuilder->setWorkingDirectory(__DIR__ . '/../../');
+            $processBuilder->setWorkingDirectory(getcwd());
             $phpCsFixer = $processBuilder->getProcess();
             $phpCsFixer->run();
 
@@ -136,8 +159,8 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $processBuilder = new ProcessBuilder(array('php', 'bin/phpcs', '--standard=PSR2', $file));
-            $processBuilder->setWorkingDirectory(__DIR__ . '/../../');
+            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/phpcs', '--standard=PSR2', $file));
+            $processBuilder->setWorkingDirectory(getcwd());
             $phpCsFixer = $processBuilder->getProcess();
             $phpCsFixer->run();
 
