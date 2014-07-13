@@ -1,11 +1,6 @@
-# pre-commit
+# PHP Git Hooks
 
-File pre-commit for the local repository of the Symfony project. Checks the committed files:
-
-* PHP Syntax on PHP-errors (with PHPLint)
-* Check code style for compliance with the standard PSR2
-
-Based on `pre-commit` hook of [Carlos Buenosvinos](http://carlosbuenosvinos.com/write-your-git-hooks-in-php-and-keep-them-under-git-control/).
+The Git hooks for applying in the local repository of the PHP project. Include the `pre-commit` hook.
 
 ## Installation
 
@@ -13,8 +8,8 @@ Clone repository:
 
 ```bash
 cd some/path
-git clone https://github.com/intaro/sf-pre-commit
-cd sf-pre-commit
+git clone https://github.com/intaro/php-git-hooks
+cd php-git-hooks
 php -r "readfile('https://getcomposer.org/installer');" | php
 ./composer.phar install
 ```
@@ -23,10 +18,19 @@ Make symlink to the `pre-commit` file:
 
 ```bash
 cd some/symfony/project/.git/hooks
-ln -s some/path/sf-pre-commit/pre-commit pre-commit
+ln -s some/path/php-git-hooks/pre-commit pre-commit
 ```
 
-## Example of output
+## pre-commit
+
+Checks the committed files:
+
+* PHP Syntax on PHP-errors (with PHPLint)
+* Check code style for compliance with the standard PSR2
+
+Based on `pre-commit` hook of [Carlos Buenosvinos](http://carlosbuenosvinos.com/write-your-git-hooks-in-php-and-keep-them-under-git-control/).
+
+### Example of output
 
 ```bash
 $ git ci -m "commit message"
