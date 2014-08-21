@@ -159,7 +159,7 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/phpcs', '--standard=PSR2', $file));
+            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/phpcs', '--encoding=utf-8', '--standard=PSR2', $file));
             $processBuilder->setWorkingDirectory(getcwd());
             $phpCsFixer = $processBuilder->getProcess();
             $phpCsFixer->run();
