@@ -13,6 +13,7 @@ class CodeQualityTool extends Application
     private $output;
     private $input;
 
+    const PHP_FILES = '/(\.php)$/';
     const PHP_FILES_IN_SRC = '/^src\/(.*)(\.php)$/';
     const PHP_FILES_IN_CLASSES = '/^classes\/(.*)(\.php)$/';
 
@@ -31,7 +32,7 @@ class CodeQualityTool extends Application
         $files = $this->extractCommitedFiles();
 
         $output->writeln('<info>Check composer</info>');
-        $this->checkComposer($files);
+        //$this->checkComposer($files);
 
         $output->writeln('<info>Running PHPLint</info>');
         if (!$this->phpLint($files)) {
@@ -120,18 +121,22 @@ class CodeQualityTool extends Application
         $succeed = true;
 
         foreach ($files as $file) {
-            $classesFile = preg_match(self::PHP_FILES_IN_CLASSES, $file);
-            $srcFile = preg_match(self::PHP_FILES_IN_SRC, $file);
+            $phpFile = preg_match(self::PHP_FILES, $file);
 
-            if (!$classesFile && !$srcFile) {
+            if (!$phpFile) {
                 continue;
             }
 
-            $fixers = '-psr0';
-            if ($classesFile) {
-                $fixers = 'eof_ending,indentation,linefeed,lowercase_keywords,trailing_spaces,short_tag,php_closing_tag,extra_empty_lines,elseif,function_declaration';
-            }
-            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/php-cs-fixer', '--dry-run', '--verbose', 'fix', $file, '--fixers='.$fixers));
+            $fixers = 'contrib';
+            $processBuilder = new ProcessBuilder(array(
+                'php', 
+                __DIR__ . '/vendor/bin/php-cs-fixer', 
+                '--dry-run', 
+                '--verbose', 
+                'fix', 
+                $file,
+                '--fixers='.$fixers
+            ));
 
             $processBuilder->setWorkingDirectory(getcwd());
             $phpCsFixer = $processBuilder->getProcess();
