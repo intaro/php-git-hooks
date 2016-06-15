@@ -1,7 +1,7 @@
 {
     "require": {
         "squizlabs/php_codesniffer": "@stable",
-        "fabpot/php-cs-fixer": "@stable",
+        "friendsofphp/php-cs-fixer": "@stable",
         "symfony/console": "@stable",
         "symfony/process": "@stable"
     }
