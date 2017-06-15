@@ -127,15 +127,13 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $fixers = 'contrib';
             $processBuilder = new ProcessBuilder(array(
-                'php', 
-                __DIR__ . '/vendor/bin/php-cs-fixer', 
-                '--dry-run', 
-                '--verbose', 
-                'fix', 
+                'php',
+                __DIR__ . '/vendor/bin/php-cs-fixer',
+                '--dry-run',
+                '--verbose',
+                'fix',
                 $file,
-                '--fixers='.$fixers
             ));
 
             $processBuilder->setWorkingDirectory(getcwd());
