@@ -132,6 +132,7 @@ class CodeQualityTool extends Application
                 __DIR__ . '/vendor/bin/php-cs-fixer',
                 '--dry-run',
                 '--verbose',
+                '--using-cache=no',
                 'fix',
                 $file,
             ));
