@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Application;
 
 class CodeQualityTool extends Application
@@ -99,8 +99,7 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $processBuilder = new ProcessBuilder(array('php', '-l', $file));
-            $process = $processBuilder->getProcess();
+            $process = new Process(array('php', '-l', $file));
             $process->run();
 
             if (!$process->isSuccessful()) {
@@ -127,7 +126,7 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $processBuilder = new ProcessBuilder(array(
+            $phpCsFixer = new Process(array(
                 'php',
                 __DIR__ . '/vendor/bin/php-cs-fixer',
                 '--dry-run',
@@ -137,8 +136,7 @@ class CodeQualityTool extends Application
                 $file,
             ));
 
-            $processBuilder->setWorkingDirectory(getcwd());
-            $phpCsFixer = $processBuilder->getProcess();
+            $phpCsFixer->setWorkingDirectory(getcwd());
             $phpCsFixer->run();
 
             if (!$phpCsFixer->isSuccessful()) {
@@ -163,9 +161,8 @@ class CodeQualityTool extends Application
                 continue;
             }
 
-            $processBuilder = new ProcessBuilder(array('php', __DIR__ . '/vendor/bin/phpcs', '--encoding=utf-8', '--standard=PSR2', $file));
-            $processBuilder->setWorkingDirectory(getcwd());
-            $phpCsFixer = $processBuilder->getProcess();
+            $phpCsFixer = new Process(array('php', __DIR__ . '/vendor/bin/phpcs', '--encoding=utf-8', '--standard=PSR2', $file));
+            $phpCsFixer->setWorkingDirectory(getcwd());
             $phpCsFixer->run();
 
             if (!$phpCsFixer->isSuccessful()) {
